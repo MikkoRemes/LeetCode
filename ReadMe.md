@@ -1,10 +1,10 @@
 
 # Problemsets
 
-1. [x] :green_heart: 0001 Two Sum
-1. [ ] :yellow_heart: 0002 Add Two Numbers
-1. [ ] :yellow_heart: 0003 Longest Substring Withjout Repeating Characters
-1. [ ] :heart: 0004 Median of Two Sorted Arrays
+:white_check_mark: :green_heart: 0001 Two Sum
+:black_square_button: :yellow_heart: 0002 Add Two Numbers
+:black_square_button: :yellow_heart: 0003 Longest Substring Withjout Repeating Characters
+:black_square_button: :heart: 0004 Median of Two Sorted Arrays
 
 # Base program
 
