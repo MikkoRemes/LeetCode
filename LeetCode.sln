@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0001_TwoSum", "0001_TwoSum\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0004_MedianOfTwoSortedArrays", "0004_MedianOfTwoSortedArrays\0004_MedianOfTwoSortedArrays.csproj", "{17247EA6-A464-4EBA-BEEB-4970B0B6AA98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0010_RegularExpressionMatching", "0010_RegularExpressionMatching\0010_RegularExpressionMatching.csproj", "{8DC4B40A-11A4-44A4-A112-EBFE5757D65C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{17247EA6-A464-4EBA-BEEB-4970B0B6AA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17247EA6-A464-4EBA-BEEB-4970B0B6AA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17247EA6-A464-4EBA-BEEB-4970B0B6AA98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DC4B40A-11A4-44A4-A112-EBFE5757D65C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DC4B40A-11A4-44A4-A112-EBFE5757D65C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DC4B40A-11A4-44A4-A112-EBFE5757D65C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DC4B40A-11A4-44A4-A112-EBFE5757D65C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
