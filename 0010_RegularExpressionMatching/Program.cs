@@ -8,7 +8,7 @@ BenchmarkRunner.Run<Benchmarks>();
 public static class TestData
 {
     public record DataModel(string S, string A, bool IsMatch);
-    public static DataModel[] DataSets => [DataSet_01, DataSet_02, DataSet_03, DataSet_04, DataSet_05, DataSet_06, DataSet_07, DataSet_08];
+    public static DataModel[] DataSets => [DataSet_01, DataSet_02, DataSet_03, DataSet_04, DataSet_05, DataSet_06, DataSet_07, DataSet_08, DataSet_09];
 
     public static DataModel DataSet_01 = new("aa", "a", false);
     public static DataModel DataSet_02 = new("aa", "a*", true);
@@ -18,6 +18,8 @@ public static class TestData
     public static DataModel DataSet_06 = new("abbaacdc", "a..aa.dc", true);
     public static DataModel DataSet_07 = new("abbaacdc", "abba*acdc", true);
     public static DataModel DataSet_08 = new("abcd", "efg*", false);
+    public static DataModel DataSet_09 = new("aab", "c*a*b", true);
+    public static DataModel DataSet_10 = new("mississippi", "mis*is*p*.", true);
 
     public static DataModel DataSet_long = new("abcdefghijabcdefghij", "a*bcdefghijab*cdefghij", true);
 }
@@ -49,6 +51,9 @@ public class Tests
     [InlineData(4)]
     [InlineData(5)]
     [InlineData(6)]
+    [InlineData(7)]
+    [InlineData(8)]
+    [InlineData(9)]
     public void Test_1(int testIndex) 
     {
         DataModel testData = TestData.DataSets[testIndex];
@@ -121,7 +126,6 @@ public class Solution
         return IsMatchSpan(s, p);
     }
 
-    // TODO Fix to match actual question
     public bool IsMatchSpan(ReadOnlySpan<char> s, ReadOnlySpan<char> p)
     {
         int j = 0;
@@ -158,7 +162,8 @@ public class Solution
             }
 
             if (s[j] != p[i])
-                return false;
+                if(i >= p.Length || p[i + 1] != MATCHZEROORMORE)
+                    return false;
 
             j++;
             if (j > s.Length)

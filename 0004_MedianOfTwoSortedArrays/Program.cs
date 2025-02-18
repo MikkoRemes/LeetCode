@@ -237,46 +237,34 @@ public class Solution
             return currentValue;
     }
 
-    int p1 = 0, p2 = 0;
-
-    private int GetMin(int[] nums1, int[] nums2)
-    {
-        if (p1 < nums1.Length && p2 < nums2.Length)
-        {
-            return nums1[p1] < nums2[p2] ? nums1[p1++] : nums2[p2++];
-        }
-        else if (p1 < nums1.Length)
-        {
-            return nums1[p1++];
-        }
-        else if (p2 < nums2.Length)
-        {
-            return nums2[p2++];
-        }
-
-        return -1;
-    }
-
     public double FindMedianSortedArraysExampleSolution(int[] nums1, int[] nums2)
     {
-        int m = nums1.Length, n = nums2.Length;
-        if ((m + n) % 2 == 0)
-        {
-            for (int i = 0; i < (m + n) / 2 - 1; ++i)
-            {
-                int tmp = GetMin(nums1, nums2);
-            }
+        List<int> merged = new List<int>();
+        int i = 0, j = 0;
 
-            return (double)(GetMin(nums1, nums2) + GetMin(nums1, nums2)) / 2;
+        while (i < nums1.Length && j < nums2.Length)
+        {
+            if (nums1[i] < nums2[j])
+            {
+                merged.Add(nums1[i++]);
+            }
+            else
+            {
+                merged.Add(nums2[j++]);
+            }
+        }
+
+        while (i < nums1.Length) merged.Add(nums1[i++]);
+        while (j < nums2.Length) merged.Add(nums2[j++]);
+
+        int mid = merged.Count / 2;
+        if (merged.Count % 2 == 0)
+        {
+            return (merged[mid - 1] + merged[mid]) / 2.0;
         }
         else
         {
-            for (int i = 0; i < (m + n) / 2; ++i)
-            {
-                int tmp = GetMin(nums1, nums2);
-            }
-
-            return GetMin(nums1, nums2);
+            return merged[mid];
         }
     }
 }
