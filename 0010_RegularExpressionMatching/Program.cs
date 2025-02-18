@@ -18,13 +18,17 @@ public static class TestData
     public static DataModel DataSet_06 = new("abbaacdc", "a..aa.dc", true);
     public static DataModel DataSet_07 = new("abbaacdc", "abba*acdc", true);
     public static DataModel DataSet_08 = new("abcd", "efg*", false);
+
+    public static DataModel DataSet_long = new("abcdefghijabcdefghij", "*hijab*", true);
 }
 
 [MemoryDiagnoser]
 public class Benchmarks
 {
+    Solution _sut = new Solution();
+
     [Benchmark]
-    public bool test() { return true; }
+    public bool test() { return _sut.IsMatch(TestData.DataSet_long.S, TestData.DataSet_long.A); }
 }
 
 public class Tests
@@ -47,7 +51,13 @@ public class Tests
     }
 
     [Fact]
-    public void TestLong() { }
+    public void TestLong() 
+    {
+        DataModel testData = TestData.DataSet_long;
+        var result = _sut.IsMatch(testData.S, testData.A);
+        Assert.Equal(testData.IsMatch, result);
+
+    }
 }
 
 public class Solution
