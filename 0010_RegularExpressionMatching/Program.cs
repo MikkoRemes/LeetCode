@@ -13,13 +13,13 @@ public static class TestData
     public static DataModel DataSet_01 = new("aa", "a", false);
     public static DataModel DataSet_02 = new("aa", "a*", true);
     public static DataModel DataSet_03 = new("ab", ".*", true);
-    public static DataModel DataSet_04 = new("abbaacdc", "a*aa*dc", true);
+    public static DataModel DataSet_04 = new("abbaacdc", "a*..aa*.dc", true);
     public static DataModel DataSet_05 = new("abbaacdc", "a.aa.dc", false);
     public static DataModel DataSet_06 = new("abbaacdc", "a..aa.dc", true);
     public static DataModel DataSet_07 = new("abbaacdc", "abba*acdc", true);
     public static DataModel DataSet_08 = new("abcd", "efg*", false);
 
-    public static DataModel DataSet_long = new("abcdefghijabcdefghij", "a*hijab*", true);
+    public static DataModel DataSet_long = new("abcdefghijabcdefghij", "a*bcdefghijab*cdefghij", true);
 }
 
 [MemoryDiagnoser]
@@ -29,6 +29,12 @@ public class Benchmarks
 
     [Benchmark]
     public bool test() { return _sut.IsMatch(TestData.DataSet_long.S, TestData.DataSet_long.A); }
+
+    [Benchmark]
+    public bool testExampleSolution() { return _sut.IsMatchExampleSolution(TestData.DataSet_long.S, TestData.DataSet_long.A); }
+
+    [Benchmark]
+    public bool testRegEx() { return _sut.IsMatchRegEx(TestData.DataSet_long.S, TestData.DataSet_long.A); }
 }
 
 public class Tests
@@ -107,10 +113,6 @@ public class Tests
 
 public class Solution
 {
-    // TODO This fails. It will give match
-    //Regex regex = new(p);
-    //return regex.IsMatch(s);
-
     private const char MATCHSINGLE = '.';
     private const char MATCHZEROORMORE = '*';
 
@@ -119,6 +121,7 @@ public class Solution
         return IsMatchSpan(s, p);
     }
 
+    // TODO Fix to match actual question
     public bool IsMatchSpan(ReadOnlySpan<char> s, ReadOnlySpan<char> p)
     {
         int j = 0;
@@ -133,16 +136,25 @@ public class Solution
 
             if (p[i] == MATCHZEROORMORE)
             {
-                // Last pattern char is zero or more
-                if (i == p.Length - 1)
+                if (i == 0)
+                    return false;
+
+                if (p[i - 1] == MATCHSINGLE)
                     return true;
 
-                i++;
                 while (j < s.Length)
-                    if (s[j++] == p[i])
-                        goto end;
+                    if (s[j] != p[i-1])
+                        break;
+                    else
+                        j++;
 
-                return false;
+                for (int k = i + 1; k < p.Length; k++)
+                    if (p[k] == p[i - 1])
+                        j--;
+                    else
+                        break;
+
+                continue;
             }
 
             if (s[j] != p[i])
@@ -151,8 +163,6 @@ public class Solution
             j++;
             if (j > s.Length)
                 return false;
-
-            end:;
         }
 
         return j == s.Length;
