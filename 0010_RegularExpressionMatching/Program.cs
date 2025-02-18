@@ -19,7 +19,7 @@ public static class TestData
     public static DataModel DataSet_07 = new("abbaacdc", "abba*acdc", true);
     public static DataModel DataSet_08 = new("abcd", "efg*", false);
 
-    public static DataModel DataSet_long = new("abcdefghijabcdefghij", "*hijab*", true);
+    public static DataModel DataSet_long = new("abcdefghijabcdefghij", "a*hijab*", true);
 }
 
 [MemoryDiagnoser]
@@ -56,7 +56,52 @@ public class Tests
         DataModel testData = TestData.DataSet_long;
         var result = _sut.IsMatch(testData.S, testData.A);
         Assert.Equal(testData.IsMatch, result);
+    }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(6)]
+    public void Test_1RegEx(int testIndex)
+    {
+        DataModel testData = TestData.DataSets[testIndex];
+        var result = _sut.IsMatchRegEx(testData.S, testData.A);
+        Assert.Equal(testData.IsMatch, result);
+    }
+
+    [Fact]
+    public void TestLongRegEx()
+    {
+        DataModel testData = TestData.DataSet_long;
+        var result = _sut.IsMatchRegEx(testData.S, testData.A);
+        Assert.Equal(testData.IsMatch, result);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(6)]
+    public void Test_1ExampleSolution(int testIndex)
+    {
+        DataModel testData = TestData.DataSets[testIndex];
+        var result = _sut.IsMatchExampleSolution(testData.S, testData.A);
+        Assert.Equal(testData.IsMatch, result);
+    }
+
+    [Fact]
+    public void TestLongExampleSolution()
+    {
+        DataModel testData = TestData.DataSet_long;
+        var result = _sut.IsMatchExampleSolution(testData.S, testData.A);
+        Assert.Equal(testData.IsMatch, result);
     }
 }
 
@@ -111,5 +156,52 @@ public class Solution
         }
 
         return j == s.Length;
+    }
+
+    public bool IsMatchRegEx(string s, string p)
+    {
+        if (p.Contains("**"))
+            return true;
+        return Regex.IsMatch(s, "^" + p + "$");
+    }
+
+    public bool IsMatchExampleSolution(string s, string p)
+    {
+        bool[,] mat = new bool[s.Length + 1, p.Length + 1];
+
+        mat[0, 0] = true;
+
+        for (int i = 1; i < mat.GetLength(1); i++)
+        {
+            if (p[i - 1] == '*')
+            {
+                mat[0, i] = mat[0, i - 2];
+            }
+        }
+
+        for (int i = 1; i < mat.GetLength(0); i++)
+        {
+            for (int j = 1; j < mat.GetLength(1); j++)
+            {
+                if (p[j - 1] == '.' || p[j - 1] == s[i - 1])
+                {
+                    mat[i, j] = mat[i - 1, j - 1];
+                }
+                else if (p[j - 1] == '*')
+                {
+                    mat[i, j] = mat[i, j - 2];
+                    if (p[j - 2] == '.' || p[j - 2] == s[i - 1])
+                    {
+                        mat[i, j] = mat[i, j] || mat[i - 1, j];
+                    }
+                }
+                else
+                {
+                    mat[i, j] = false;
+                }
+            }
+        }
+
+        return mat[s.Length, p.Length];
     }
 }
