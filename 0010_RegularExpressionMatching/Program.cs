@@ -11,7 +11,7 @@ public static class TestData
     public static DataModel[] DataSets => 
         [DataSet_01, DataSet_02, DataSet_03, DataSet_04, DataSet_05, DataSet_06, DataSet_07, DataSet_08, DataSet_09, DataSet_10,
          DataSet_11, DataSet_12, DataSet_13, DataSet_14, DataSet_15, DataSet_16, DataSet_17, DataSet_18, DataSet_19, DataSet_20,
-         DataSet_21];
+         DataSet_21, DataSet_22];
 
     public static DataModel DataSet_01 = new("aa", "a", false);
     public static DataModel DataSet_02 = new("aa", "a*", true);
@@ -34,6 +34,7 @@ public static class TestData
     public static DataModel DataSet_19 = new("a", "ab*a", false);
     public static DataModel DataSet_20 = new("aaa", "ab*a*c*a", true);
     public static DataModel DataSet_21 = new("aaac", "ab*a*c*a", false);
+    public static DataModel DataSet_22 = new("aaaca", "ab*a*c*a", true);
 
     public static DataModel DataSet_long = new("abcdefghijabcdefghij", "a*bcdefghijab*cdefghij", true);
 }
@@ -79,6 +80,7 @@ public class Tests
     [InlineData(18)]
     [InlineData(19)]
     [InlineData(20)]
+    [InlineData(21)]
     public void Test_1(int testIndex) 
     {
         DataModel testData = TestData.DataSets[testIndex];
@@ -116,6 +118,7 @@ public class Tests
     [InlineData(18)]
     [InlineData(19)]
     [InlineData(20)]
+    [InlineData(21)]
     public void Test_1RegEx(int testIndex)
     {
         DataModel testData = TestData.DataSets[testIndex];
@@ -153,6 +156,7 @@ public class Tests
     [InlineData(18)]
     [InlineData(19)]
     [InlineData(20)]
+    [InlineData(21)]
     public void Test_1ExampleSolution(int testIndex)
     {
         DataModel testData = TestData.DataSets[testIndex];
